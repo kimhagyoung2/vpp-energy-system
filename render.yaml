@@ -1,0 +1,27 @@
+services:
+  # 백엔드 API 서비스
+  - type: web
+    name: vpp-energy-backend
+    env: node
+    plan: free
+    buildCommand: cd backend && npm install
+    startCommand: cd backend && npm start
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: PORT
+        value: 10000
+    healthCheckPath: /api/power-plants
+
+  # 프론트엔드 웹 서비스
+  - type: web
+    name: vpp-energy-frontend
+    env: static
+    plan: free
+    buildCommand: cd frontend && npm install && npm run build
+    staticPublishPath: frontend/build
+    envVars:
+      - key: REACT_APP_API_URL
+        value: https://vpp-energy-backend.onrender.com
+      - key: REACT_APP_WS_URL
+        value: https://vpp-energy-backend.onrender.com 
